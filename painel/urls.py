@@ -19,5 +19,9 @@ from dashboard import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('home', views.home, name='home'),
+    path('dashboard', views.dashboard, name='dashboard'),
     path('wordcloud', views.wordcloud, name='wordcloud'),
+    path('update', views.update, name='update'),
 ]
