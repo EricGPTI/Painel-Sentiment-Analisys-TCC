@@ -1,6 +1,7 @@
 # from django.db import models
 from pymongo import MongoClient
 from decouple import config
+from nltk import corpus
 
 # Create your models here.
 
@@ -12,19 +13,15 @@ def message():
     messages = []
     msg = db.message.find()
     for m in msg:
-        messages.append(m['msg'])
+        message_obj = m.get('msg')
+        if message_obj is not None and message_obj.__contains__('/9j/'):
+            continue
+        messages.append(message_obj)
     return messages
 
 
-#class Message(models.Model):
-#    _id = models.ObjectIdField()
-#    msg_id = models.CharField(max_length=255)
-#    msg_type = models.CharField(max_length=255)
-#    msg_chat_id = models.CharField(max_length=255)
-#    msg_sender_id = models.CharField(max_length=255)
-#    msg_sender = models.CharField(max_length=255)
-#    msg_date = models.DateTimeField()
-#    msg = models.TextField()
-#
-#    class Meta:
-#        ordering = ['msg_date']
+def stopwords():
+    stop_words = corpus.stopwords.words('portuguese')
+    stop_words.append(x for x in ['9j', '4AAQSKZJRgABAAQAAAQABAAD', 'MediaMessage', 'MMSMessage'])
+    stop_words.append(corpus.stopwords.words('english'))
+    return stop_words

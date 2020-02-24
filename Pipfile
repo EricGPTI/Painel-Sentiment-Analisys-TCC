@@ -13,6 +13,7 @@ django = "*"
 python-decouple = "*"
 wordcloud = "*"
 pymongo = "*"
+nltk = "*"
 
 [requires]
 python_version = "3.6"

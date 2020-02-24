@@ -1,13 +1,8 @@
-from django.shortcuts import HttpResponse, render
-from .models import message
+from django.shortcuts import render
+from .models import message, stopwords
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
-#from pymongo import MongoClient
-#from decouple import config
-
-
-#client = MongoClient(config('DATABASE_HOST'), config('DATABASE_PORT', cast=int))
-#db = client.dbbot
+from wordcloud import WordCloud
+import os
 
 # Create your views here.
 
@@ -17,26 +12,29 @@ def home(request):
 
 
 def wordcloud(request):
-   return render(request, 'wordcloud.html')
+    return render(request, 'wordcloud.html')
 
 
 def dashboard(messages):
-    for msg in messages:
-        print(msg)
+    pass
 
 
-def stopwords(messages):
-    stopwords = set(STOPWORDS)
-    return stopwords
+def func_stopwords():
+    stops = stopwords()
+    return stops
 
 
 def update(request):
-    messages = Message.objects.filter()
-    dashboard(messages)
+    messages = message()
+    summary = []
+    for m in messages:
+        if m is not None:
+            summary.append(m)
+    all_summary = ",".join(s for s in summary)
+    stops = func_stopwords()
+    wordcloud = WordCloud(stopwords=stops, background_color="black").generate(all_summary)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.imshow(wordcloud, interpolation='bilinear')
+    plt.tight_layout()
+    plt.show()
     return wordcloud(request)
-    
-    #all_summary = " ".join(s for s in messages)
-
-    #stop = stopwords(messages)
-    #wordcloud = WordCloud(stopwords=stop, background_color="black").generate(all_summary)
-
