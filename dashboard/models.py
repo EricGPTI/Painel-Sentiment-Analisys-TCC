@@ -22,6 +22,15 @@ def message():
 
 def stopwords():
     stop_words = corpus.stopwords.words('portuguese')
-    stop_words.append(x for x in ['9j', '4AAQSKZJRgABAAQAAAQABAAD', 'MediaMessage', 'MMSMessage'])
-    stop_words.append(corpus.stopwords.words('english'))
-    return stop_words
+    new_words = append_words(stop_words)
+    new_words.append(lambda x: x for x in corpus.stopwords.words('english'))
+    print(new_words)
+    return new_words
+
+
+def append_words(stop_words):
+    stop_w = stop_words
+    words = ['9j', '4AAQSKZJRgABAAQAAAQABAAD', 'MediaMessage', 'MMSMessage', 'note', 'https']
+    for w in words:
+        stop_w.append(w)
+    return stop_w
