@@ -16,29 +16,11 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-6" id="arquivo" style="display:none">
-                <form action="{% url 'process_stops' %}" method="post" id="stop" class="was-validated" enctype="multipart/form-data">
+                <form action="{% url 'process_stops' %}" method="post" id="stop_file" class="was-validated" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="validatedCustomFile" name="csv" required>
-                        <label class="custom-file-label" for="validatedCustomFile">Selecione um arquivo csv</label>
-                        <div class="invalid-feedback">Obrigatório!</div>
-                    </div>
-                    <div class="form-group">
-                        <select class="custom-select" name="option" required>
-                            <option value="">Escolha o canal da coleta</option>
-                            <option value="Buscador">Buscador</option>
-                            <option value="Discord">Discord</option>
-                            <option value="Facebook">Facebook</option>
-                            <option value="Forum">Forum</option>
-                            <option value="IRC">IRC</option>
-                            <option value="Painel/Malware">Painel/Malware</option>
-                            <option value="Paste">Paste</option>
-                            <option value="Site de Compartilhamento">Site de Compartilhamento</option>
-                            <option value="Skype">Skype</option>
-                            <option value="Telegram">Telegram</option>
-                            <option value="Twitter">Twitter</option>
-                            <option value="Whatsapp">Whatsapp</option>
-                        </select>
+                        <input type="file" class="custom-file-input" id="validatedCustomFile" name="file" required>
+                        <label class="custom-file-label" for="validatedCustomFile">Selecione um arquivo</label>
                         <div class="invalid-feedback">Obrigatório!</div>
                     </div>
                     <div class="form-group">
@@ -47,55 +29,17 @@
                             <option value="|">Pipe ("|")</option>
                             <option value=",">Vírgula (",")</option>
                             <option value=";">Ponto e Vírgula (";")</option>
-                            <option value="without">Apenas Cartão</option>
                         </select>
-                        <div class="invalid-feedback">Obrigatório!</div>
-                    </div>
-                    <div class="mb-3">
-                        <textarea class="form-control is-invalid" name="descricao" placeholder="Faça uma descrição da coleta!" required></textarea>
                         <div class="invalid-feedback">Obrigatório!</div>
                     </div>
                     <button type="submit" class="btn btn-danger">Salvar</button>
                 </form>
             </div>
             <div class="col-md-6" id="texto" style="display:none">
-                <form action="{% url 'process_stops' %}" method="post" id="stop" class="was-validated" enctype="multipart/form-data">
+                <form action="{% url 'process_stops' %}" method="post" id="stop_words" class="was-validated" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="validatedCustomFile" name="csv" required>
-                        <label class="custom-file-label" for="validatedCustomFile">Selecione um arquivo csv</label>
-                        <div class="invalid-feedback">Obrigatório!</div>
-                    </div>
-                    <div class="form-group">
-                        <select class="custom-select" name="option" required>
-                            <option value="">Escolha o canal da coleta</option>
-                            <option value="Buscador">Teste</option>
-                            <option value="Discord">Discord</option>
-                            <option value="Facebook">Facebook</option>
-                            <option value="Forum">Forum</option>
-                            <option value="IRC">IRC</option>
-                            <option value="Painel/Malware">Painel/Malware</option>
-                            <option value="Paste">Paste</option>
-                            <option value="Site de Compartilhamento">Site de Compartilhamento</option>
-                            <option value="Skype">Skype</option>
-                            <option value="Telegram">Telegram</option>
-                            <option value="Twitter">Twitter</option>
-                            <option value="Whatsapp">Whatsapp</option>
-                        </select>
-                        <div class="invalid-feedback">Obrigatório!</div>
-                    </div>
-                    <div class="form-group">
-                        <select class="custom-select" name="delimiter" required>
-                            <option value="">Escolha um delimitador</option>
-                            <option value="|">Pipe ("|")</option>
-                            <option value=",">Vírgula (",")</option>
-                            <option value=";">Ponto e Vírgula (";")</option>
-                            <option value="without">Apenas Cartão</option>
-                        </select>
-                        <div class="invalid-feedback">Obrigatório!</div>
-                    </div>
                     <div class="mb-3">
-                        <textarea class="form-control is-invalid" name="descricao" placeholder="Faça uma descrição da coleta!" required></textarea>
+                        <textarea class="form-control is-invalid" name="stop_words_inline" placeholder="Palavras separadas por ;" required></textarea>
                         <div class="invalid-feedback">Obrigatório!</div>
                     </div>
                     <button type="submit" class="btn btn-danger">Salvar</button>
