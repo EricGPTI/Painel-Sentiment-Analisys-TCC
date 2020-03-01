@@ -1,8 +1,9 @@
-from django.shortcuts import render, HttpResponse
-from .models import message, stopwords
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import message, stopwords, save_words
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
-from dashboard.classes.delimiter import Delimiter
+from dashboard.classes.normalizer import Normalize
 import os
 
 # Create your views here.
@@ -48,14 +49,12 @@ def update(request):
 def process_stops(request):
     if request.method == 'POST' and request.FILES:
         file = request.FILES['file']
-        delimiter = request.POST['delimiter']
-        print(type(file))
         if file.name[-4:] in ['.csv', '.txt']:
-            list_file = file.read().decode('utf-8').splitlines()
-            for line in list_file:
-                adjust = Delimiter(line)
-                new_line = adjust.test()
-                print(new_line)
-        return HttpResponse(file.name)
+            normalized = Normalize(file)
+            set_list = normalized.normalize_sep()
+            for element_list in set_list:
+                if save_words(element_list) is True:
+                    messages.success(request, 'Novas palavras cadastradas com sucesso!') # => preciso adicionar as mensagens padrão.
+                    return redirect(request, wordcloud)
     # Faça algo
-        
+       
