@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from .models import message, stopwords
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
+from dashboard.classes.delimiter import Delimiter
 import os
 
 # Create your views here.
@@ -35,9 +36,7 @@ def update(request):
         if m is not None:
             summary.append(m)
     all_summary = ",".join(s for s in summary)
-    # print(all_summary)
     stops = func_stopwords()
-    # print(type(all_summary))
     wordcloud = WordCloud(stopwords=stops, background_color="black").generate(all_summary)
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.imshow(wordcloud, interpolation='bilinear')
@@ -47,4 +46,16 @@ def update(request):
 
 
 def process_stops(request):
-    pass
+    if request.method == 'POST' and request.FILES:
+        file = request.FILES['file']
+        delimiter = request.POST['delimiter']
+        print(type(file))
+        if file.name[-4:] in ['.csv', '.txt']:
+            list_file = file.read().decode('utf-8').splitlines()
+            for line in list_file:
+                adjust = Delimiter(line)
+                new_line = adjust.test()
+                print(new_line)
+        return HttpResponse(file.name)
+    # Faça algo
+        
