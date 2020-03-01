@@ -23,6 +23,7 @@ def message():
 def stopwords():
     stop_words = corpus.stopwords.words('portuguese')
     new_words = append_words(stop_words)
+    # Preciso tratar generator abaixo.
     new_words.append(lambda x: x for x in corpus.stopwords.words('english'))
     print(new_words)
     return new_words
