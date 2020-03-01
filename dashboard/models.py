@@ -9,6 +9,13 @@ client = MongoClient(config("DATABASE_HOST"), config("DATABASE_PORT", cast=int))
 db = client.dbbot
 
 
+def exist_words(word: str):
+    stopwords = db.stopwords
+    if stopwords.find_one('words') is None:
+        return False
+    return True
+
+
 def message():
     messages = []
     msg = db.message.find()
@@ -29,9 +36,11 @@ def stopwords():
     return new_words
 
 
-def append_words(stop_words):
-    stop_w = stop_words
-    words = ['9j', '4AAQSKZJRgABAAQAAAQABAAD', 'MediaMessage', 'MMSMessage', 'note', 'https']
-    for w in words:
-        stop_w.append(w)
-    return stop_w
+def save_words(element_words: list):
+    stopwords = db.stopwords
+    for word in element_words:
+        word_obj = word.upper()
+        if exist_words(word) is True:
+            return False
+        stopwords.update_one({'_id': 1}, {'$push': {'words': word_obj}})
+    return True
