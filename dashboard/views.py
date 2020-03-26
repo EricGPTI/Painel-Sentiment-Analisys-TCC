@@ -38,9 +38,9 @@ def update(request):
             summary.append(m)
     all_summary = ",".join(s for s in summary)
     stops = func_stopwords()
-    wordcloud = WordCloud(stopwords=stops, background_color="black").generate(all_summary)
+    w_cloud = WordCloud(stopwords=stops, background_color="black").generate(all_summary)
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.imshow(wordcloud, interpolation='bilinear')
+    ax.imshow(w_cloud, interpolation='bilinear')
     plt.tight_layout()
     plt.show()
     return wordcloud(request)
@@ -53,8 +53,9 @@ def process_stops(request):
             normalized = Normalize(file)
             set_list = normalized.normalize_sep()
             for element_list in set_list:
+                print(element_list)
                 if save_words(element_list) is True:
                     messages.success(request, 'Novas palavras cadastradas com sucesso!') # => preciso adicionar as mensagens padrão.
-                    return redirect(request, wordcloud)
-    # Faça algo
+                    return redirect(wordcloud)
+                continue
        
