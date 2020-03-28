@@ -52,10 +52,14 @@ def process_stops(request):
         if file.name[-4:] in ['.csv', '.txt']:
             normalized = Normalize(file)
             set_list = normalized.normalize_sep()
+            cont = 0
             for element_list in set_list:
-                print(element_list)
-                if save_words(element_list) is True:
-                    messages.success(request, 'Novas palavras cadastradas com sucesso!') # => preciso adicionar as mensagens padrão.
-                    return redirect(wordcloud)
-                continue
-       
+                words_saved = save_words(element_list)
+                cont += words_saved[1]
+            if words_saved[0] is 'True':
+                messages.success(request, f'{cont} novas palavras cadastradas com sucesso!')
+                return redirect(stop)
+            messages.warning(request, 'Nenhuma nova palavra foi adicionada.')
+            return redirect(stop)
+        messages.warning(request, 'Seu arquivo não é um arquivo texto ou csv.')
+        return redirect(stop)

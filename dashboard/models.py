@@ -18,7 +18,9 @@ def exist_words(word: str) -> True or False:
     :rtype: bool
     """
     stopwords = db.stopwords
-    if stopwords.find_one('words') is None:
+    #word_obj = stopwords.aggregate([{"$unwind": "$words"}, {"$match": {"words": word}}])
+    word_obj = stopwords.find_one({"words": word})
+    if word_obj is None:
         return False
     return True
 
@@ -44,7 +46,7 @@ def stopwords():
     new_words = append_words(stop_words)
     # Preciso tratar generator abaixo.
     new_words.append(lambda x: x for x in corpus.stopwords.words('english'))
-    print(new_words)
+    #print(new_words)
     return new_words
 
 
@@ -57,9 +59,13 @@ def save_words(element_words: list) -> True or False:
     :rtype: bool
     """
     stopwords = db.stopwords
+    cont = 0
     for word in element_words:
         word_obj = word.upper()
-        if exist_words(word) is True:
-            return False
-        stopwords.update_one({'_id': 1}, {'$push': {'words': word_obj}})
-    return True
+        if exist_words(word_obj) is False:
+            stopwords.update_one({'_id': 1}, {'$push': {'words': word_obj}})
+            cont += 1
+        continue
+    if cont == 0:
+        return ['False', cont]
+    return ['True', cont]
