@@ -2,6 +2,7 @@
 from pymongo import MongoClient
 from decouple import config
 from nltk import corpus
+from wordcloud import STOPWORDS
 
 # Create your models here.
 
@@ -18,7 +19,6 @@ def exist_words(word: str) -> True or False:
     :rtype: bool
     """
     stopwords = db.stopwords
-    #word_obj = stopwords.aggregate([{"$unwind": "$words"}, {"$match": {"words": word}}])
     word_obj = stopwords.find_one({"words": word})
     if word_obj is None:
         return False
@@ -40,22 +40,26 @@ def message():
         messages.append(message_obj)
     return messages
 
-### Preciso trabalhar Stopwords function ###
+
 def stopwords():
-    stop_words = corpus.stopwords.words('portuguese')
-    new_words = append_words(stop_words)
-    # Preciso tratar generator abaixo.
-    new_words.append(lambda x: x for x in corpus.stopwords.words('english'))
-    #print(new_words)
-    return new_words
+    stopwords = db.stopwords
+    stop_words = list(STOPWORDS)
+    for elem in stop_words:
+        word = elem.upper()
+        if exist_words(word) is False:
+            stopwords.update_one({'_id': 1}, {'$push': {'words': word}})
+    stops_obj = db.stopwords.find({})
+    for elem in stops_obj:
+        stops = elem.get('words')
+    return stops
 
 
-def save_words(element_words: list) -> True or False:
+def save_words(element_words: list) -> list:
     """
     Salva as palavras na collection de stopwords.
     :param element_words: Palavra a ser salva.
     :type element_words: str
-    :return: True or False
+    :return: str(True or False) + cont
     :rtype: bool
     """
     stopwords = db.stopwords
