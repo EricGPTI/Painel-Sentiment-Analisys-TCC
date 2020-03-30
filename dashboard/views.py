@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import message, stopwords, save_words
+from .models import message, stopwords, save_words, get_chats
 import matplotlib
 matplotlib.use('Agg')
 from decouple import config
@@ -17,8 +17,8 @@ def home(request):
 
 
 def wordcloud(request):
-    stop = func_stopwords()
-    return render(request, 'wordcloud.html')
+    chat = get_chats()
+    return render(request, 'wordcloud.html', {'chats': chat})
 
 
 def dashboard(messages):
@@ -68,3 +68,7 @@ def process_stops(request):
             return redirect(stop)
         messages.warning(request, 'Seu arquivo não é um arquivo texto ou csv.')
         return redirect(stop)
+
+def filter_chat(request):
+    stop = func_stopwords()
+    return render(wordcloud)

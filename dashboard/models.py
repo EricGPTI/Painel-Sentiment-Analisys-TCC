@@ -73,3 +73,12 @@ def save_words(element_words: list) -> list:
     if cont == 0:
         return ['False', cont]
     return ['True', cont]
+
+
+def get_chats():
+    chats = db.message
+    chats_obj = chats.find({}, {'chat_name': 1, '_id': 0})
+    chat = []
+    for item in chats_obj:
+        chat.append(item.get('chat_name'))
+    return list(set(chat))

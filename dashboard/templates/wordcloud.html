@@ -3,9 +3,20 @@
 {% load static %}
 
 {% block 'content' %}
+    <hr class="my-4">
     <div class="row align-items-start" style="margin-top: 20px">
-        <a class="btn btn-primary" href="update">Update</a>
-    </div>
+        <form action="{% url 'cloudchat' %}" method="post", id="wordcloud", enctype="multipart/form-data">
+            {% csrf_token %}
+            <p class="font-weight-bold text-primary">Escolha um chat</p>
+            <select class="form-control form-control-lg" type="text">
+                <option value="">None</option>
+            {% for chat in chats %}
+                {%  if chat is not None %}
+                    <option value="">{{chat}}</option>
+                {% endif %}
+            {% endfor %}
+        </form>
+    <hr class="my-4"><button type="submit" class="btn btn-primary">Update</button>
     <div class="row align-items-start" style="margin-top: 20px">
         <picture>
             <img src="{% static 'img/wordcloud.jpg' %}" class="img-fluid " alt="WordCloud">
