@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import message, stopwords, save_words
-#import matplotlib
-#matplotlib.use('Agg')
+import matplotlib
+matplotlib.use('Agg')
+from decouple import config
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from dashboard.classes.normalizer import Normalize
@@ -44,8 +45,9 @@ def update(request):
     w_cloud = WordCloud(stopwords=stops, background_color="black").generate(all_summary)
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.imshow(w_cloud, interpolation='bilinear')
+    ax.set_axis_off()
     plt.tight_layout()
-    plt.show()
+    plt.savefig(config('PATH_IMG'), dpi=300, quality=100, format='jpg')
     return wordcloud(request)
 
 
