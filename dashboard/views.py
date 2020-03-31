@@ -18,7 +18,8 @@ def home(request):
 
 def wordcloud(request):
     chat = get_chats()
-    return render(request, 'wordcloud.html', {'chats': chat})
+
+    return render(request, 'wordcloud.html', {'chats': chat[0]})
 
 
 def dashboard(messages):
@@ -76,9 +77,3 @@ def process_stops(request):
             return redirect(stop)
         messages.warning(request, 'Seu arquivo não é um arquivo texto ou csv.')
         return redirect(stop)
-
-#def cloudchat(request):
-#
-#        message = message(chat)
-#
-#        return wordcloud(request)

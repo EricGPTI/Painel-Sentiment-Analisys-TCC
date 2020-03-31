@@ -51,7 +51,6 @@ def message(chat):
     return messages
 
 
-
 def stopwords():
     stopwords = db.stopwords
     stop_words = list(STOPWORDS)
@@ -87,9 +86,9 @@ def save_words(element_words: list) -> list:
 
 
 def get_chats():
-    chats = db.message
-    chats_obj = chats.find({}, {'chat_name': 1, '_id': 0})
+    chats = db.chat
+    chats_obj = chats.find({}, {'chat': 1, '_id': 0})
     chat = []
     for item in chats_obj:
-        chat.append(item.get('chat_name'))
-    return list(set(chat))
+        chat.append(item.get('chat'))
+    return chat
