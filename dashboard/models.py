@@ -25,20 +25,31 @@ def exist_words(word: str) -> True or False:
     return True
 
 
-def message():
+def message(chat):
     """
     Faz um find na collection message buscando todas as palavras dentro da collection.
     :return: Retorna a lista contendo todas as mensagens encontradas exceto mensagens já ignoradas.
     :rtype: list
     """
     messages = []
-    msg = db.message.find()
-    for m in msg:
-        message_obj = m.get('msg')
-        if message_obj is not None and message_obj.__contains__('/9j/'):
+    if chat == 'None':
+        message_obj = db.message.find()
+        for item in message_obj:
+            message = item.get('msg')
+            if message is None:
+                continue
+            else:
+                messages.append(message)
+        return messages
+    message_obj = db.message.find({'chat_name': chat})
+    for item in message_obj:
+        message = item.get('msg')
+        if message is None:
             continue
-        messages.append(message_obj)
+        else:
+            messages.append(message)
     return messages
+
 
 
 def stopwords():

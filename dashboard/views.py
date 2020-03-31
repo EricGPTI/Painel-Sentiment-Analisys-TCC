@@ -35,20 +35,28 @@ def func_stopwords():
 
 
 def update(request):
-    messages = message()
-    summary = []
-    for m in messages:
-        if m is not None:
-            summary.append(m)
-    all_summary = ",".join(s for s in summary)
-    stops = stopwords()
-    w_cloud = WordCloud(stopwords=stops, background_color="black").generate(all_summary)
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.imshow(w_cloud, interpolation='bilinear')
-    ax.set_axis_off()
-    plt.tight_layout()
-    plt.savefig(config('PATH_IMG'), dpi=300, quality=100, format='jpg')
-    return wordcloud(request)
+    stop = func_stopwords()
+    if request.method == 'POST':
+        chat = request.POST.get('chat')
+        messages = message(chat)
+        summary = []
+        for m in messages:
+            if m is not None:
+                summary.append(m)
+        all_summary = ",".join(s for s in summary)
+        stops = stopwords()
+        w_cloud = WordCloud(stopwords=stops, background_color="black").generate(all_summary)
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.imshow(w_cloud, interpolation='bilinear')
+        ax.set_axis_off()
+        plt.tight_layout()
+        if os.path.exists(config('PATH_IMG')) is True:
+            os.remove(config('PATH_IMG'))
+            plt.savefig(config('PATH_IMG'), dpi=300, quality=100, format='jpeg')
+            return wordcloud(request)
+        else:
+            plt.savefig(config('PATH_IMG'), dpi=300, quality=100, format='jpg')
+            return wordcloud(request)
 
 
 def process_stops(request):
@@ -69,6 +77,8 @@ def process_stops(request):
         messages.warning(request, 'Seu arquivo não é um arquivo texto ou csv.')
         return redirect(stop)
 
-def filter_chat(request):
-    stop = func_stopwords()
-    return render(wordcloud)
+#def cloudchat(request):
+#
+#        message = message(chat)
+#
+#        return wordcloud(request)
