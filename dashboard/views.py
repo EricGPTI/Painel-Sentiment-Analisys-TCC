@@ -44,7 +44,8 @@ def update(request):
         summary = []
         for m in msgs:
             if m is not None:
-                summary.append(m.upper())
+                m = m.upper()
+                summary.append(m)
         all_summary = ",".join(s for s in summary)
         stops = stopwords()
         try:
@@ -55,7 +56,7 @@ def update(request):
             plt.tight_layout()
             if os.path.exists(config('PATH_IMG')) is True:
                 os.remove(config('PATH_IMG'))
-                plt.savefig(config('PATH_IMG'), dpi=300, quality=100, format='jpeg')
+                plt.savefig(config('PATH_IMG'), dpi=300, quality=100, format='jpg')
                 return wordcloud(request)
             else:
                 plt.savefig(config('PATH_IMG'), dpi=300, quality=100, format='jpg')
