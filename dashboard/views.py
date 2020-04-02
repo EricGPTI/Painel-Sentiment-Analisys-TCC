@@ -42,7 +42,7 @@ def update(request):
         summary = []
         for m in msgs:
             if m is not None:
-                summary.append(m)
+                summary.append(m.upper())
         all_summary = ",".join(s for s in summary)
         stops = stopwords()
         try:
