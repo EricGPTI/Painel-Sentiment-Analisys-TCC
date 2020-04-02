@@ -8,9 +8,11 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from dashboard.classes.normalizer import Normalize
 import os
+import logging
 
 # Create your views here.
 
+logging.basicConfig(level=logging.warning())
 
 def home(request):
     return render(request, 'index.html')
