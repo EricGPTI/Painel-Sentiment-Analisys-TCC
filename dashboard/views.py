@@ -12,7 +12,7 @@ import logging
 
 # Create your views here.
 
-logging.basicConfig(level=logging.warning())
+logging.basicConfig(filename='log.txt', level=logging.WARNING)
 
 def home(request):
     return render(request, 'index.html')
