@@ -26,5 +26,4 @@ urlpatterns = [
     path('update', views.update, name='update'),
     path('stop', views.stop, name='stop'),
     path('process_stops', views.process_stops, name='process_stops'),
-    # path('cloudchat', views.cloudchat, name='cloudchat'),
 ]

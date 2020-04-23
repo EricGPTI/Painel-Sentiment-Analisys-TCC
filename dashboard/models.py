@@ -4,7 +4,6 @@ from decouple import config
 from nltk import corpus
 from wordcloud import STOPWORDS
 
-# Create your models here.
 
 client = MongoClient(config("DATABASE_HOST"), config("DATABASE_PORT", cast=int))
 db = client.dbbot
@@ -29,7 +28,7 @@ def message(chat):
     """
     Faz um find na collection message buscando todas as palavras dentro da collection.
     :return: Retorna a lista contendo todas as mensagens encontradas exceto mensagens já ignoradas.
-    :rtype: list
+    :rtype: List
     """
     messages = []
     if chat == 'None':
@@ -52,6 +51,11 @@ def message(chat):
 
 
 def stopwords():
+    """
+    Função que faz a verificação da existência de uma palavra em banco de dados e em sua ausência faz o salvamento.
+    :return: Retorna lista de stopwords.
+    :rtype: List
+    """
     stopwords = db.stopwords
     stop_words = list(STOPWORDS)
     for elem in stop_words:
@@ -86,6 +90,11 @@ def save_words(element_words: list) -> list:
 
 
 def get_chats():
+    """
+    Função que faz a busca por chats na base de dados.
+    :return: Lista de chats
+    :rtype: list.
+    """
     chats = db.chat
     chats_obj = chats.find({}, {'chat': 1, '_id': 0})
     chat = []
